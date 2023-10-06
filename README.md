@@ -24,5 +24,6 @@ A tool for downloading images from IMDb galleries based on scrapeIMDB_gallery by
  + Using SoupStrainer for more efficient html parsing.
  + Using settings for API_KEY (optional)
  + Usage:
+   
      imdb_gallery_scrape.py movie <title|movieID>
      imdb_gallery_scrape.py actor|person <name|personID>
