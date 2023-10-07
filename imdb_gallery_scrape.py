@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# imdb_gallery_scrape.py
 """
  This is modified from https://github.com/IvRogoz
  (License ??)
@@ -33,7 +34,6 @@ import string
 import re
 import shutil
 import requests
-from urllib.request import urlopen
 from python_settings import settings
 from bs4 import BeautifulSoup, SoupStrainer
 from imdb import (Cinemagoer,
@@ -84,9 +84,24 @@ try:
     if (use_id == 1) and (is_person == 0):
         title = ia.get_movie(arg2)['title']
         movies = ia.search_movie(title)
+        title_words = title.split()
+        title_long = title_words[0]
+        for w in range(1,4):
+            try:
+                title_long += '_' + title_words[w]
+            except:
+                break
+
     elif (use_id == 0) and (is_person == 0):
         title = arg2
         movies = ia.search_movie(arg2)
+        title_words = title.split()
+        title_long = title_words[0]
+        for w in range(1,4):
+            try:
+                title_long += '_' + title_words[w]
+            except:
+                break
 
     if (use_id == 1) and (is_person == 1):
         nom = ia.get_person(arg2)['name']
@@ -106,8 +121,8 @@ if is_person == 0:
     movie_id = movies[0].movieID
     print('ID',movie_id)
     imdb_ID = 'tt'+str(movie_id)
-    folder = str(title)
-    image_tag = str(title)
+    folder = str(title_long)
+    image_tag = str(title_long)
     base_url = "https://www.imdb.com/title/" + imdb_ID + "/mediaindex/"
 elif is_person == 1:
     person_id = persons[0].personID
@@ -210,3 +225,4 @@ for x in range(start_page, paggination):
 
         except Exception as e:
             print(e)
+
