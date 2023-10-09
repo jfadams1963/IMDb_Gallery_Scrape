@@ -18,7 +18,7 @@
  
  Modified  Sep/Oct 2023 by https://github.com/jfadams1963:
  + Made changes to reflect the new structure on IMDb.
- + Added Cinemagoer functionality.
+ + Added Cinemagoer functionality to specify movie|person by title|name.
  + Modifed requests to go through a scraper proxy to keep IMDb happy.
    ->Get a free API key at https://scrapeops.io/
  + Using SoupStrainer for more efficient html parsing.
@@ -48,7 +48,7 @@ arg2 = sys.argv[2]
 # Getting API_KEY via settings. Set it however works best for you. -jfadams1963
 API_KEY = settings.SCRAPEOPS_API_KEY
 is_person = 0
-image_num_limit = 20 # Use this to limit number of images downloaded  -jfadams1963
+image_num_limit = 30 # Use this to limit number of images downloaded  -jfadams1963
 ####
 
 start_page = 0
@@ -159,8 +159,12 @@ for x in range(start_page, paggination):
     soup = BeautifulSoup(htmldata, 'html.parser')
     images = soup.find_all(class_='media_index_thumb_list')
     links = images[0].find_all('a')
+    
     print("Found:", len(links), "images")
-    print("Will download " + str(image_num_limit))
+    if image_num_limit >= len(links):
+        print("Will download " + str(len(links)))
+    else:
+        print("Will download " + str(image_num_limit))
 
     for index, link in enumerate(links):
         i += 1
@@ -225,4 +229,3 @@ for x in range(start_page, paggination):
 
         except Exception as e:
             print(e)
-
