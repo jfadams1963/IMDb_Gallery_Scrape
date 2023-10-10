@@ -9,8 +9,7 @@
 
  I wish IvRogoz had included a license statement so that I could
  honor it as I pass this work on. My personal choice is the
- 2-clause BSD license. If I can ever get in touch whith IvRogoz, I
- will ask them about it. In the mean time, this work is released
+ 2-clause BSD license. In the mean time, this work is released
  for use free of charge or any encumberences. There are no statements
  of fitness for use, etc., etc. It comes with no warranties, etc.,
  etc. Use it at your own risk and do what ever you will with it.
@@ -24,8 +23,13 @@
  + Using SoupStrainer for more efficient html parsing.
  + Using settings for API_KEY (optional)
  + Usage:
-     imdb_gallery_scrape.py movie <title|movieID>
-     imdb_gallery_scrape.py actor|person <name|personID>
+     imdb_gallery_scrape.py movie <title|movieID> <num images>
+     imdb_gallery_scrape.py actor|person <name|personID> <num images>
+
+ Some things to tweak/play with:
+ + start_page = 0, change this to start on the page you want.
+ + paggination = 1, this give you only the first gallery page
+   set it as high as you need. One page give you up to 48 images.
 """
 
 import sys
@@ -44,11 +48,18 @@ from imdb import (Cinemagoer,
 #### Added by jfadams1963 
 arg1 = sys.argv[1]
 arg2 = sys.argv[2]
+
+# Use this to limit number of images downloaded if not set
+# as an argument -jfadams1963
+if (len(sys.argv) >=4) and (sys.argv[3].isnumeric() is True):
+    image_num_limit = int(sys.argv[3])
+else:
+    image_num_limit = int(10)
+    
 # You will need an APi key from https://scrapeops.io/
 # Getting API_KEY via settings. Set it however works best for you. -jfadams1963
 API_KEY = settings.SCRAPEOPS_API_KEY
 is_person = 0
-image_num_limit = 30 # Use this to limit number of images downloaded  -jfadams1963
 ####
 
 start_page = 0
@@ -77,10 +88,12 @@ if (arg1 == 'actor') or arg1 == ('person'):
     arg1 = 'person'
     is_person = 1
 
+# Instantiate a Cinemagoer object
 movie = ''
 persons = ''
 try:
     ia = Cinemagoer()
+    # Set title
     if (use_id == 1) and (is_person == 0):
         title = ia.get_movie(arg2)['title']
         movies = ia.search_movie(title)
@@ -91,7 +104,6 @@ try:
                 title_long += '_' + title_words[w]
             except:
                 break
-
     elif (use_id == 0) and (is_person == 0):
         title = arg2
         movies = ia.search_movie(arg2)
@@ -102,13 +114,12 @@ try:
                 title_long += '_' + title_words[w]
             except:
                 break
-
+    # Set name
     if (use_id == 1) and (is_person == 1):
         nom = ia.get_person(arg2)['name']
         persons = ia.search_person(nom)
         first_last = nom.split()
         name = first_last[0] + '_' + first_last[1]
-
     elif (use_id == 0) and (is_person == 1):
         persons = ia.search_person(arg2)
         first_last = arg2.split()
@@ -117,6 +128,7 @@ except  (IMDbError, IMDbDataAccessError) as err:
     print(err)
     sys.exit("Exception instantiating Cinemagoer")
 
+# Set folder name to title or actor name
 if is_person == 0:
     movie_id = movies[0].movieID
     print('ID',movie_id)
@@ -187,7 +199,7 @@ for x in range(start_page, paggination):
         print('')
         print('Image no. ' + str(i) + ' of ' + str(image_num_limit))
 
-        # Hmm, need to handle this condition -jfadams1963
+        # Hmm, need to handle this condition better -jfadams1963
         if image_url is None:
             print("No image found")
             continue
@@ -220,7 +232,6 @@ for x in range(start_page, paggination):
 
             saved = os.path.isfile(file_name)
             # Should be =>if saved<=  -jfadams1963
-            #if not saved:
             if saved:
                 print(">>>> ",saved)
                 print('Image sucessfully Downloaded: ',file_name)
