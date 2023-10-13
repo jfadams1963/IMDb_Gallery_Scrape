@@ -23,8 +23,8 @@
  + Using SoupStrainer for more efficient html parsing.
  + Using settings for API_KEY (optional)
  + Usage:
-     imdb_gallery_scrape.py movie <title|movieID> <num images>
-     imdb_gallery_scrape.py actor|person <name|personID> <num images>
+     imdb_gallery_scrape.py movie <title|movieID>
+     imdb_gallery_scrape.py actor|person <name|personID>
 
  Some things to tweak/play with:
  + start_page = 0, change this to start on the page you want.
@@ -48,14 +48,7 @@ from imdb import (Cinemagoer,
 #### Added by jfadams1963 
 arg1 = sys.argv[1]
 arg2 = sys.argv[2]
-
-# Use this to limit number of images downloaded if not set
-# as an argument -jfadams1963
-if (len(sys.argv) >=4) and (sys.argv[3].isnumeric() is True):
-    image_num_limit = int(sys.argv[3])
-else:
-    image_num_limit = int(10)
-    
+image_num_limit = int(10)
 # You will need an APi key from https://scrapeops.io/
 # Getting API_KEY via settings. Set it however works best for you. -jfadams1963
 API_KEY = settings.SCRAPEOPS_API_KEY
@@ -109,7 +102,7 @@ try:
         movies = ia.search_movie(arg2)
         title_words = title.split()
         title_long = title_words[0]
-        for w in range(1,4):
+        for w in range(1,10):
             try:
                 title_long += '_' + title_words[w]
             except:
@@ -118,12 +111,22 @@ try:
     if (use_id == 1) and (is_person == 1):
         nom = ia.get_person(arg2)['name']
         persons = ia.search_person(nom)
-        first_last = nom.split()
-        name = first_last[0] + '_' + first_last[1]
+        name_words = nom.split()
+        name_long = name_words[0]
+        for w in range(1,4):
+            try:
+                name_long += '_' + name_words[w]
+            except:
+                break
     elif (use_id == 0) and (is_person == 1):
         persons = ia.search_person(arg2)
-        first_last = arg2.split()
-        name = first_last[0] + '_' + first_last[1]
+        name_words = arg2.split()
+        name_long = name_words[0]
+        for w in range(1,4):
+            try:
+                name_long += '_' + name_words[w]
+            except:
+                break
 except  (IMDbError, IMDbDataAccessError) as err:
     print(err)
     sys.exit("Exception instantiating Cinemagoer")
@@ -139,8 +142,8 @@ if is_person == 0:
 elif is_person == 1:
     person_id = persons[0].personID
     imdb_ID = 'nm'+str(person_id)
-    folder = str(name)
-    image_tag = str(name)
+    folder = str(name_long)
+    image_tag = str(name_long)
     base_url = "https://www.imdb.com/name/" + imdb_ID + "/mediaindex/"
 #### End Cinemagoer section
 
@@ -173,6 +176,8 @@ for x in range(start_page, paggination):
     links = images[0].find_all('a')
     
     print("Found:", len(links), "images")
+    image_num_limit = int(input('Number of images to download:'))
+
     if image_num_limit >= len(links):
         print("Will download " + str(len(links)))
     else:
@@ -240,3 +245,4 @@ for x in range(start_page, paggination):
 
         except Exception as e:
             print(e)
+         
