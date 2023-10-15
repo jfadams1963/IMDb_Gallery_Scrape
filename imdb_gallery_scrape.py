@@ -205,8 +205,6 @@ for x in range(start_page, paggination):
         image_url = image_source_soup.find('meta')['content']
         print('')
         print('Image no. ' + str(i) + ' of ' + str(image_num_limit))
-
-        # Hmm, need to handle this condition better -jfadams1963
         if image_url is None:
             print("No image found")
             continue
