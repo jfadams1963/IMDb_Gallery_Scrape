@@ -155,9 +155,9 @@ if not os.path.exists(folder):
 folder = "./" + folder + "/"
 print("Created Directory:", folder)
 
-i = 0 # For enumerating individual images -jfadams1963
+i = 0 # For indexing individual images -jfadams1963
 
-# x enumerates gallery pages -jfadams1963
+# x indexes gallery pages -jfadams1963
 for x in range(start_page, paggination):
     if x > 0:
         url =base_url +"?page="+str(x)
@@ -174,8 +174,10 @@ for x in range(start_page, paggination):
     soup = BeautifulSoup(htmldata, 'html.parser')
     images = soup.find_all(class_='media_index_thumb_list')
     links = images[0].find_all('a')
-    
+
+    # Print how many images found on current gallery page -jfadams1963
     print("Found:", len(links), "images")
+    # Prompt for how many to download -jfadams1963
     image_num_limit = int(input('Number of images to download:'))
 
     if image_num_limit >= len(links):
@@ -185,7 +187,7 @@ for x in range(start_page, paggination):
 
     for index, link in enumerate(links):
         i += 1
-        if i > image_num_limit: # Using a limit on number of images. (optional)
+        if i > image_num_limit:
             sys.exit(0)
         image_i = link['href']
         # This url gives us the mediaviewer page with image i -jfadams1963
@@ -208,8 +210,12 @@ for x in range(start_page, paggination):
         if image_url is None:
             print("No image found")
             continue
+        
+        # Let's get rid of rediculous file names  -jfadams1963
+        extn = image_url.split('.')[-1]
+        file_name = folder + image_tag + '_' + str(i) + '.' + extn
         print("Downloading " + image_url)
-        file_name = folder + image_url.split('/')[-1]
+        print("Renaming to", file_name)
 
         try:
             # Use scrapeops proxy to download image  -jfadams1963
@@ -224,19 +230,15 @@ for x in range(start_page, paggination):
 
             g = 0
             while exists:
-                print("file exists:", file_name)
+                print("file exists:", file_name, "renaming...")
                 g += 1
-                file_name =folder+str(index)+"_"+str(g)+"_"+ image_url.split('/')[-1]
+                file_name =folder+str(index)+"_"+str(g)+"_"+image_tag+'_'+str(i)+'.jpg'
                 exists = os.path.isfile(file_name)
-                    
+
             with open(file_name,'wb') as f:
                 shutil.copyfileobj(res.raw, f) 
-                # Let's get rid of rediculous file names  -jfadams1963
-                file_name = os.rename(file_name,
-                                      folder + image_tag + '_' + str(i) + '.jpg')
 
             saved = os.path.isfile(file_name)
-            # Should be =>if saved<=  -jfadams1963
             if saved:
                 print(">>>> ",saved)
                 print('Image sucessfully Downloaded: ',file_name)
@@ -245,4 +247,3 @@ for x in range(start_page, paggination):
 
         except Exception as e:
             print(e)
-         
