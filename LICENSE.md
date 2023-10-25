@@ -1,6 +1,7 @@
 BSD 2-Clause License
 
 imdb_gallerey_scrape.py Copyright (c) 2023, Jonathan Adams https://github.com/jfadams1963
+
 Based on Scrape_IMDB.py by IvRogoz https://github.com/IvRogoz with permission.
 
 Redistribution and use in source and binary forms, with or without
