@@ -1,19 +1,38 @@
 #!/usr/bin/env python
 # imdb_gallery_scrape.py
 """
- This is modified from https://github.com/IvRogoz
- (License ??)
- The bulk of this code is due to a lot work on the part of
- IvRogoz (where ever you are!). I and anyone who uses this code
- owes IvRogoz a big thanks.
+########
+BSD 2-Clause License
 
- I wish IvRogoz had included a license statement so that I could
- honor it as I pass this work on. My personal choice is the
- 2-clause BSD license. In the mean time, this work is released
- for use free of charge or any encumberences. There are no statements
- of fitness for use, etc., etc. It comes with no warranties, etc.,
- etc. Use it at your own risk and do what ever you will with it.
- It's certainly not perfect, and could use a little work...
+imdb_gallerey_scrape.py Copyright (c) 2023, Jonathan Adams https://github.com/jfadams1963
+Based on Scrape_IMDB.py by IvRogoz https://github.com/IvRogoz with permission.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are met:
+
+1. Redistributions of source code must retain the above copyright notice, this
+   list of conditions and the following disclaimer.
+
+2. Redistributions in binary form must reproduce the above copyright notice,
+   this list of conditions and the following disclaimer in the documentation
+   and/or other materials provided with the distribution.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+########
+
+ This is a modified version of https://github.com/IvRogoz
+ The bulk of this code is due to a lot work on the part of
+ IvRogoz. I and anyone who uses and enjoyw this code owes IvRogoz 
+ a big thanks.
  
  Modified  Sep/Oct 2023 by https://github.com/jfadams1963:
  + Made changes to reflect the new structure on IMDb.
@@ -170,7 +189,7 @@ for x in range(start_page, paggination):
     htmldata = requests.get(url = 'https://proxy.scrapeops.io/v1/',
                             params = {'api_key': API_KEY,
                             'url': base_url },
-               timeout = 20).content
+               timeout = 30).content
     soup = BeautifulSoup(htmldata, 'html.parser')
     images = soup.find_all(class_='media_index_thumb_list')
     links = images[0].find_all('a')
@@ -198,7 +217,7 @@ for x in range(start_page, paggination):
         founddata = requests.get(url = 'https://proxy.scrapeops.io/v1/',
                                 params = {'api_key': API_KEY,
                                           'url': url, },
-                    timeout = 20).content
+                    timeout = 30).content
         # Here we get our large image URL -jfadasm1963
         meta_with_image = SoupStrainer(property="og:image")
         image_source_soup = BeautifulSoup(founddata, 'html.parser', parse_only=meta_with_image)
@@ -208,7 +227,6 @@ for x in range(start_page, paggination):
         if image_url is None:
             print("No image found")
             continue
-        
         # Let's get rid of rediculous file names  -jfadams1963
         extn = image_url.split('.')[-1]
         file_name = folder + image_tag + '_' + str(i) + '.' + extn
@@ -220,7 +238,7 @@ for x in range(start_page, paggination):
             res = requests.get(url = 'https://proxy.scrapeops.io/v1/',
                                params = {'api_key': API_KEY,
                                          'url': image_url, },
-                  stream = True, timeout = 20)
+                  stream = True, timeout = 30)
             
             exists = False
             if res.status_code == 200:
