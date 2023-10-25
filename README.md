@@ -7,7 +7,7 @@ A tool for downloading images from IMDb galleries based on scrapeIMDB_gallery by
  IvRogoz. I and anyone who uses this code
  owes IvRogoz a big thanks.
 
- This work is released under the 2-clause BSD License. Use it at your own risk,
+ This work is released under the BSD 2-clause License. Use it at your own risk,
  and do what ever you will with it.
  It's certainly not perfect, and could use a little work...
  
