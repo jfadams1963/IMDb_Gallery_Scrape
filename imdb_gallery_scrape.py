@@ -248,7 +248,7 @@ for x in range(start_page, paggination):
             while exists:
                 print("file exists:", file_name, "renaming...")
                 g += 1
-                file_name =folder+str(index)+"_"+str(g)+"_"+image_tag+'_'+str(i)+'.jpg'
+                file_name =folder+str(index)+"_"+str(g)+"_"+image_tag+'_'+str(i)+extn
                 exists = os.path.isfile(file_name)
 
             with open(file_name,'wb') as f:
