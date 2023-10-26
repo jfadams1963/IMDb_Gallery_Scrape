@@ -30,7 +30,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ########
 
  This is a modified version of https://github.com/IvRogoz
- The bulk of this code is due to a lot work on the part of
+ The bulk of this code is due to a lot of work on the part of
  IvRogoz. I and anyone who uses and enjoys this code owes IvRogoz 
  a big thanks.
  
