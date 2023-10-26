@@ -3,7 +3,7 @@ A tool for downloading images from IMDb galleries based on scrapeIMDB_gallery by
 
  This is modified from https://github.com/IvRogoz
  
- The bulk of this code is due to a lot work on the part of
+ The bulk of this code is due to a lot of work on the part of
  IvRogoz. I and anyone who uses this code
  owes IvRogoz a big thanks.
 
