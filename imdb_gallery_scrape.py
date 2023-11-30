@@ -61,8 +61,8 @@ import requests
 from python_settings import settings
 from bs4 import BeautifulSoup, SoupStrainer
 from imdb import (Cinemagoer,
-                    IMDbError,
-                    IMDbDataAccessError)
+                  IMDbError,
+                  IMDbDataAccessError)
 
 
 #### Added by jfadams1963 
@@ -189,8 +189,8 @@ for x in range(start_page, paggination):
     ## use requests.get().content with scraper proxy -jfadams1963
     htmldata = requests.get(url = 'https://proxy.scrapeops.io/v1/',
                             params = {'api_key': API_KEY,
-                            'url': base_url },
-               timeout = 30).content
+                                      'url': base_url },
+                            timeout = 30).content
     soup = BeautifulSoup(htmldata, 'html.parser')
     images = soup.find_all(class_='media_index_thumb_list')
     links = images[0].find_all('a')
@@ -218,7 +218,7 @@ for x in range(start_page, paggination):
         founddata = requests.get(url = 'https://proxy.scrapeops.io/v1/',
                                 params = {'api_key': API_KEY,
                                           'url': url, },
-                    timeout = 30).content
+                                timeout = 30).content
         # Here we get our large image URL -jfadasm1963
         meta_with_image = SoupStrainer(property="og:image")
         image_source_soup = BeautifulSoup(founddata, 'html.parser', parse_only=meta_with_image)
@@ -239,7 +239,7 @@ for x in range(start_page, paggination):
             res = requests.get(url = 'https://proxy.scrapeops.io/v1/',
                                params = {'api_key': API_KEY,
                                          'url': image_url, },
-                  stream = True, timeout = 30)
+                               stream = True, timeout = 30)
             
             exists = False
             if res.status_code == 200:
