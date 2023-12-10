@@ -50,6 +50,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  + start_page = 0, change this to start on the page you want.
  + paggination = 1, this give you only the first gallery page
    set it as high as you need. One page give you up to 48 images.
+ + image_num_limit = int(x), set the upper limit of number of images
+   to down load.
 """
 
 import sys
