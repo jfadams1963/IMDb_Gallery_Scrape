@@ -1,0 +1,4 @@
+python-settings >= 0.2.2
+git+https://github.com/cinemagoer/cinemagoer
+requests >= 2.31.0
+beautifulsoup4 >= 4.12.2
